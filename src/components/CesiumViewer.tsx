@@ -81,8 +81,29 @@ null
 null
 );
 
+const[
 
+ready,
 
+setReady
+
+] =
+
+useState(
+false
+);
+
+const[
+
+started,
+
+setStarted
+
+] =
+
+useState(
+false
+);
 
 /*
 ====================
@@ -90,8 +111,7 @@ GPS
 ====================
 */
 
-
-useEffect(()=>{
+const requestLocation = () => {
 
 navigator
 .geolocation
@@ -135,10 +155,22 @@ true
 
 );
 
+}
+
+const isMobile =
+/Android|iPhone|iPad|iPod/i.test(
+ navigator.userAgent
+);
+
+useEffect(()=>{
+
+if(!isMobile){
+
+requestLocation();
+
+}
+
 },[]);
-
-
-
 
 
 /*
@@ -332,7 +364,23 @@ position.lat,
 
 ),
 
-duration:5
+duration:5,
+
+complete:()=>{
+
+
+setTimeout(()=>{
+
+
+setReady(
+true
+);
+
+
+},1000);
+
+
+}
 
 });
 
@@ -354,12 +402,6 @@ timer
 },[
 position
 ]);
-
-
-
-
-
-
 
 /*
 ====================
@@ -422,7 +464,6 @@ DIVE
 ===========
 */
 
-
 if(
 phase==="dive"
 ){
@@ -472,6 +513,7 @@ duration:
 
 complete:
 ()=>resolve()
+
 
 });
 
@@ -652,12 +694,19 @@ complete:
 
 });
 
+setTimeout(()=>{
+
+
+setStarted(
+true
+);
+
+
+},1000);
 
 return;
 
 }
-
-
 
 
 /*
@@ -715,6 +764,8 @@ roll:
 duration:
 10,
 
+
+
 complete:
 ()=>resolve()
 
@@ -723,23 +774,46 @@ complete:
 
 });
 
-
 return;
 
 }
 
-
-
 };
-
-
-
-
 
 
 return(
 
 <>
+
+{
+isMobile
+&&
+!position
+&&
+
+<button
+onClick={
+requestLocation
+}
+
+style={{
+position:"fixed",
+top:80,
+left:"50%",
+padding:"16px 16px",
+transform:"translateX(-50%)",
+zIndex:999999999,
+background:"gray",
+color:"white",
+borderRadius:20,
+}}
+>
+
+Увімкнути геолокацію 🌍
+
+</button>
+
+}
 
 
 <div
@@ -762,13 +836,15 @@ inset:
 
 
 
-<ThroughEarthSequence
+{ready && !started && (<ThroughEarthSequence
 
 onStart={
+    
 handlePhase
+
 }
 
-/>
+/>)}
 
 
 </>

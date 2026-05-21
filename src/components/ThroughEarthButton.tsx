@@ -22,7 +22,7 @@ export default function ThroughEarthButton({
           "fixed",
 
         bottom:
-          "120px",
+          "200px",
 
         left:
           "50%",

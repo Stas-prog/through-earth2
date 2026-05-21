@@ -192,7 +192,7 @@ src={videoSrc}
 autoPlay
 muted
 playsInline
-preload="auto"
+preload="metadata"
 
 onEnded={()=>{
 setPhase("reveal")
@@ -204,7 +204,7 @@ top-0
 left-0
 w-screen
 h-screen
-object-cover
+object-contain
 z-[999999999]
 pointer-events-none
 "
