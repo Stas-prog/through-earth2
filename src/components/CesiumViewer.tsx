@@ -108,6 +108,19 @@ useState(
 false
 );
 
+const [
+
+loadingLocation,
+
+setLoadingLocation
+
+] =
+
+useState(
+false
+);
+
+
 /*
 ====================
 GPS
@@ -115,6 +128,8 @@ GPS
 */
 
 const requestLocation = () => {
+
+setLoadingLocation(true);
 
 navigator
 .geolocation
@@ -141,6 +156,7 @@ pos
 
 },
 
+
 (err)=>{
 
 console.error(
@@ -148,6 +164,7 @@ err
 );
 
 },
+
 
 {
 
@@ -246,7 +263,7 @@ true
 
 viewer.scene.globe
 .enableLighting =
-true;
+false;
 
 
 
@@ -790,14 +807,21 @@ return(
 
 {
 isMobile
+
 &&
-!position
+
+!ready
+
 &&
 
 <button
 
 onClick={
 requestLocation
+}
+
+disabled={
+loadingLocation
 }
 
 style={{
@@ -820,37 +844,55 @@ backdropFilter:"blur(16px)",
 
 WebkitBackdropFilter:"blur(16px)",
 
-color:"#fff",
-
-border:"1px solid rgba(255,255,255,.12)",
-
 borderRadius:"28px",
+
+color:"white",
+
+border:"1px solid rgba(255,255,255,.1)",
 
 fontSize:"15px",
 
-fontWeight:500,
+cursor:
 
-letterSpacing:"1px",
+loadingLocation
 
-cursor:"pointer",
+?
 
-overflow:"hidden",
+"default"
 
-boxShadow:`
+:
 
-0 8px 32px rgba(0,0,0,.35),
+"pointer",
 
-inset 0 1px 1px rgba(255,255,255,.08)
+opacity:
 
-`,
+loadingLocation
 
-transition:"all .25s ease"
+?
+
+0.8
+
+:
+
+1
 
 }}
 
 >
 
-Allow Location 🌍
+{
+
+loadingLocation
+
+?
+
+"Locating... 🛰️"
+
+:
+
+"Allow Location 🌍"
+
+}
 
 </button>
 
