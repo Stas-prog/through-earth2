@@ -14,6 +14,9 @@ from "./ThroughEarthSequence";
 import
 "cesium/Build/Cesium/Widgets/widgets.css";
 
+Cesium.Ion.defaultAccessToken =
+import.meta.env.VITE_CESIUM_TOKEN;
+
 
 if (
   typeof window !==
@@ -792,24 +795,62 @@ isMobile
 &&
 
 <button
+
 onClick={
 requestLocation
 }
 
 style={{
+
 position:"fixed",
+
 top:80,
+
 left:"50%",
-padding:"16px 16px",
+
 transform:"translateX(-50%)",
+
+padding:"14px 24px",
+
 zIndex:999999999,
-background:"gray",
-color:"white",
-borderRadius:20,
+
+background:"rgba(25,25,30,.55)",
+
+backdropFilter:"blur(16px)",
+
+WebkitBackdropFilter:"blur(16px)",
+
+color:"#fff",
+
+border:"1px solid rgba(255,255,255,.12)",
+
+borderRadius:"28px",
+
+fontSize:"15px",
+
+fontWeight:500,
+
+letterSpacing:"1px",
+
+cursor:"pointer",
+
+overflow:"hidden",
+
+boxShadow:`
+
+0 8px 32px rgba(0,0,0,.35),
+
+inset 0 1px 1px rgba(255,255,255,.08)
+
+`,
+
+transition:"all .25s ease"
+
 }}
+
 >
 
-Увімкнути геолокацію 🌍
+Allow Location 🌍
 
 </button>
 
