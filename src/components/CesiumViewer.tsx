@@ -265,7 +265,6 @@ viewer.scene.globe
 .enableLighting =
 false;
 
-viewer.resolutionScale = 0.5;
 
 viewerRef.current =
 viewer;
