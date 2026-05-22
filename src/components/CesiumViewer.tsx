@@ -265,6 +265,10 @@ viewer.scene.globe
 .enableLighting =
 false;
 
+viewer.resolutionScale = 0.5;
+
+viewer.scene.globe.baseColor =
+Cesium.Color.BLUE;
 
 
 viewerRef.current =
