@@ -11,6 +11,9 @@ import * as Cesium from "cesium";
 import ThroughEarthSequence
 from "./ThroughEarthSequence";
 
+import LocationFallbackModal
+from "./LocationFallbackModal";
+
 import
 "cesium/Build/Cesium/Widgets/widgets.css";
 
@@ -120,6 +123,18 @@ useState(
 false
 );
 
+const[
+
+showFallback,
+
+setShowFallback
+
+]=
+
+useState(
+true
+);
+
 
 /*
 ====================
@@ -127,55 +142,57 @@ GPS
 ====================
 */
 
-const requestLocation = () => {
+const requestLocation = ()=>{
 
-setLoadingLocation(true);
+ setLoadingLocation(true);
 
-navigator
-.geolocation
+ navigator.geolocation.getCurrentPosition(
 
-.getCurrentPosition(
+ (pos)=>{
 
-(pos)=>{
+   setPosition({
+     lat:pos.coords.latitude,
+     lng:pos.coords.longitude
+   });
 
-setPosition({
+   setLoadingLocation(false);
 
-lat:
-
-pos
-.coords
-.latitude,
-
-lng:
-
-pos
-.coords
-.longitude
-
-});
-
-},
-
+ },
 
 (err)=>{
 
-console.error(
-err
+console.log(
+
+"GEO ERROR",
+
+err.code,
+
+err.message
+
 );
 
+setShowFallback(
+true
+);
+
+setLoadingLocation(
+false
+);
 },
 
+ {
 
-{
+   enableHighAccuracy:true,
 
-enableHighAccuracy:
-true
+   timeout:10000,
 
-}
+   maximumAge:60000
 
-);
+ }
 
-}
+ );
+
+};
 
 const isMobile =
 /Android|iPhone|iPad|iPod/i.test(
@@ -928,6 +945,45 @@ handlePhase
 
 />)}
 
+
+{
+
+showFallback && <LocationFallbackModal
+
+onClose={()=>{
+
+setShowFallback(
+false
+);
+
+}}
+
+
+onManualLocation={(
+
+lat,
+
+lng
+
+)=>{
+
+setPosition({
+
+lat,
+
+lng
+
+});
+
+setShowFallback(
+false
+);
+
+}}
+
+/>
+
+}
 
 </>
 
