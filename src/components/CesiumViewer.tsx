@@ -14,6 +14,9 @@ from "./ThroughEarthSequence";
 import LocationFallbackModal
 from "./LocationFallbackModal";
 
+import ExploreEarthModal
+from "./ExploreEarthModal";
+
 import
 "cesium/Build/Cesium/Widgets/widgets.css";
 
@@ -129,11 +132,47 @@ showFallback,
 
 setShowFallback
 
-]=
+] =
 
 useState(
 false
 );
+
+const[
+    
+locationText, 
+
+setLocationText
+
+] =
+
+useState(
+"Locating... 🛰️"
+);
+
+const [
+
+showExplore,
+
+setShowExplore
+
+] =
+useState(
+false
+);
+
+
+const [
+
+showExploreModal,
+
+setShowExploreModal
+
+] =
+useState(
+false
+);
+
 
 
 /*
@@ -184,7 +223,7 @@ false
 
    enableHighAccuracy:true,
 
-   timeout:10000,
+   timeout:20000,
 
    maximumAge:60000
 
@@ -208,6 +247,57 @@ requestLocation();
 }
 
 },[]);
+
+useEffect(()=>{
+
+if(!loadingLocation)
+return;
+
+setLocationText(
+"Locating... 🛰️"
+);
+
+const t1 =
+setTimeout(()=>{
+
+setLocationText(
+"Almost there... Searching for satellites 🛰️"
+);
+
+},5000);
+
+
+const t2 =
+setTimeout(()=>{
+
+setLocationText(
+"Still locating... Some devices need more time 🌍"
+);
+
+},10000);
+
+
+const t3 =
+setTimeout(()=>{
+
+setLocationText(
+"Slow connection detected 📡"
+);
+
+},15000);
+
+
+return()=>{
+
+clearTimeout(t1);
+clearTimeout(t2);
+clearTimeout(t3);
+
+};
+
+},[
+loadingLocation
+]);
 
 
 /*
@@ -421,7 +511,7 @@ true
 });
 
 
-},5000);
+},1000);
 
 
 
@@ -810,6 +900,14 @@ complete:
 
 });
 
+setTimeout(()=>{
+
+setShowExplore(
+true
+);
+
+},1000);
+
 return;
 
 }
@@ -826,7 +924,7 @@ isMobile
 
 &&
 
-!ready
+!position
 
 &&
 
@@ -902,7 +1000,7 @@ loadingLocation
 
 ?
 
-"Locating... 🛰️"
+locationText
 
 :
 
@@ -985,10 +1083,121 @@ false
 
 }
 
-</>
+{
+showExplore
+&&
 
+<button
+
+onClick={()=>{
+
+setShowExploreModal(
+true
+);
+
+setShowExplore(
+false
+)
+
+}}
+
+style={{
+
+position:
+"fixed",
+
+bottom:
+100,
+
+left:
+"50%",
+
+transform:
+"translateX(-50%)",
+
+padding:
+"16px 26px",
+
+borderRadius:
+40,
+
+background:
+"#0ea5ff",
+
+color:
+"white",
+
+fontSize:
+18,
+
+fontWeight:
+700,
+
+border:
+"none",
+
+zIndex:
+999999
+
+}}
+
+>
+
+🌍 Continue Journey
+
+</button>
+}
+
+{
+showExploreModal && (
+
+<ExploreEarthModal
+
+onClose={() => {
+
+setShowExploreModal(
+false
+);
+
+}}
+
+onSubmit={(lat,lng)=>{
+
+setPosition({
+
+lat,
+lng
+
+});
+
+
+setStarted(
+false
+);
+
+setReady(
+true
 );
 
 
+setShowExplore(
+false
+);
+
+
+setShowExploreModal(
+false
+);
+
+}}
+
+ />
+
+)
+}
+
+</>
+
+);
 
 }
