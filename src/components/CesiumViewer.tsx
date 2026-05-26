@@ -368,8 +368,23 @@ true
 
 
 
-viewer.scene.globe
-.enableLighting =
+viewer.clock.currentTime =
+
+Cesium.JulianDate.now();
+
+viewer.clock.shouldAnimate =
+true;
+
+viewer.clock.multiplier =
+1;
+
+viewer.clock.clockRange =
+Cesium.ClockRange.UNBOUNDED;
+
+viewer.scene.globe.enableLighting =
+true;
+
+viewer.scene.requestRenderMode =
 false;
 
 

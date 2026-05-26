@@ -165,11 +165,34 @@ display:"flex",
 
 justifyContent:"center",
 
-alignItems:"flex-start",
+alignItems:
+
+window.innerWidth>768
+
+?
+
+"center"
+
+:
+
+"flex-start",
+
 
 overflowY:"auto",
 
-padding:"30px 0",
+
+padding:
+
+window.innerWidth>768
+
+?
+
+"40px"
+
+:
+
+"30px 0",
+
 
 zIndex:999999999
 
